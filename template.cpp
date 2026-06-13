@@ -86,11 +86,11 @@ inline bool no() { cout << "no\n"; return false; }
 template<int M>
 inline istream& operator>>(istream& i, static_modint<M>& n) { long long t; i >> t; n = t; return i; }
 template<int M>
-inline ostream& operator<<(ostream& o, static_modint<M> const& n) { o << n.val(); return o; }
+inline ostream& operator<<(ostream& o, static_modint<M> const& n) { return o << n.val(); }
 template<int id>
 inline istream& operator>>(istream& i, dynamic_modint<id>& n) { long long t; i >> t; n = t; return i; }
 template<int id>
-inline ostream& operator<<(ostream& o, dynamic_modint<id> const& n) { o << n.val(); return o; }
+inline ostream& operator<<(ostream& o, dynamic_modint<id> const& n) { return o << n.val(); }
 
 template<class T, class U> inline istream& operator>>(istream& i, pair<T, U>& p);
 template<class T, class U> inline ostream& operator<<(ostream& o, pair<T, U> const& p);
@@ -113,9 +113,9 @@ inline ostream& operator<<(ostream& os, R&& r) {
 }
 
 template<class T, class U>
-inline istream& operator>>(istream& i, pair<T, U>& p) { i >> p.first >> p.second; return i; }
+inline istream& operator>>(istream& i, pair<T, U>& p) { return i >> p.first >> p.second; }
 template<class T, class U>
-inline ostream& operator<<(ostream& o, pair<T, U> const& p) { o << p.first << " " << p.second; return o; }
+inline ostream& operator<<(ostream& o, pair<T, U> const& p) { return o << p.first << " " << p.second; }
 
 template<class... Args>
 inline istream& operator>>(istream& i, tuple<Args...>& t) {
