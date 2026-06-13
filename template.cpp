@@ -69,12 +69,12 @@ constexpr string dir_str = "LURD";
 #define tf(x, f) views::transform([&]([[maybe_unused]] auto const& x) { return f; }) | ranges::to<vector>()
 
 // clang-format off
-bool YES() { cout << "YES\n"; return true; }
-bool NO() { cout << "NO\n"; return false; }
-bool Yes() { cout << "Yes\n"; return true; }
-bool No() { cout << "No\n"; return false; }
-bool yes() { cout << "yes\n"; return true; }
-bool no() { cout << "no\n"; return false; }
+inline bool YES() { cout << "YES\n"; return true; }
+inline bool NO() { cout << "NO\n"; return false; }
+inline bool Yes() { cout << "Yes\n"; return true; }
+inline bool No() { cout << "No\n"; return false; }
+inline bool yes() { cout << "yes\n"; return true; }
+inline bool no() { cout << "no\n"; return false; }
 // clang-format on
 #define reyes(b) (b ? Yes() : No())
 
@@ -83,15 +83,19 @@ bool no() { cout << "no\n"; return false; }
 #define fn2(f) [&]([[maybe_unused]] auto const& a1, [[maybe_unused]] auto const& a2) { return f; }
 
 // clang-format off
-template<int M> istream& operator>>(istream& i, static_modint<M>& n) { long long t; i >> t; n = t; return i; }
-template<int M> ostream& operator<<(ostream& o, static_modint<M> const& n) { o << n.val(); return o; }
-template<int id> istream& operator>>(istream& i, dynamic_modint<id>& n) { long long t; i >> t; n = t; return i; }
-template<int id> ostream& operator<<(ostream& o, dynamic_modint<id> const& n) { o << n.val(); return o; }
+template<int M>
+inline istream& operator>>(istream& i, static_modint<M>& n) { long long t; i >> t; n = t; return i; }
+template<int M>
+inline ostream& operator<<(ostream& o, static_modint<M> const& n) { o << n.val(); return o; }
+template<int id>
+inline istream& operator>>(istream& i, dynamic_modint<id>& n) { long long t; i >> t; n = t; return i; }
+template<int id>
+inline ostream& operator<<(ostream& o, dynamic_modint<id> const& n) { o << n.val(); return o; }
 
-template<class T, class U> istream& operator>>(istream& i, pair<T, U>& p);
-template<class T, class U> ostream& operator<<(ostream& o, pair<T, U> const& p);
-template<class... Args> istream& operator>>(istream& i, tuple<Args...>& t) ;
-template<class... Args> ostream& operator<<(ostream& o, tuple<Args...> const& t) ;
+template<class T, class U> inline istream& operator>>(istream& i, pair<T, U>& p);
+template<class T, class U> inline ostream& operator<<(ostream& o, pair<T, U> const& p);
+template<class... Args> inline istream& operator>>(istream& i, tuple<Args...>& t) ;
+template<class... Args> inline ostream& operator<<(ostream& o, tuple<Args...> const& t) ;
 
 template<ranges::range R>
 struct __ignore_default_range_io: false_type {};
@@ -99,27 +103,27 @@ struct __ignore_default_range_io: false_type {};
 template<ranges::range R>
   requires(ranges::output_range<R, ranges::range_value_t<R>> && !constructible_from<string_view, R>&&
            !__ignore_default_range_io<remove_cvref_t<R>>::value)
-istream& operator>>(istream& is, R&& r) { for(auto& e: r) is >> e; return is; }
+inline istream& operator>>(istream& is, R&& r) { for(auto& e: r) is >> e; return is; }
 template<ranges::input_range R>
   requires(!constructible_from<string_view, R> && !__ignore_default_range_io<remove_cvref_t<R>>::value)
-ostream& operator<<(ostream& os, R&& r) {
+inline ostream& operator<<(ostream& os, R&& r) {
   auto it = ranges::begin(r); auto end = ranges::end(r);
   if(it == end) return os;
   os << *it++; for(; it != end;) os << ' ' << *it++; return os;
 }
 
 template<class T, class U>
-istream& operator>>(istream& i, pair<T, U>& p) { i >> p.first >> p.second; return i; }
+inline istream& operator>>(istream& i, pair<T, U>& p) { i >> p.first >> p.second; return i; }
 template<class T, class U>
-ostream& operator<<(ostream& o, pair<T, U> const& p) { o << p.first << " " << p.second; return o; }
+inline ostream& operator<<(ostream& o, pair<T, U> const& p) { o << p.first << " " << p.second; return o; }
 
 template<class... Args>
-istream& operator>>(istream& i, tuple<Args...>& t) {
+inline istream& operator>>(istream& i, tuple<Args...>& t) {
   apply([&](Args&... args) { (i >> ... >> args); }, t);
   return i;
 }
 template<class... Args>
-ostream& operator<<(ostream& o, tuple<Args...> const& t) {
+inline ostream& operator<<(ostream& o, tuple<Args...> const& t) {
   constexpr size_t N = sizeof...(Args);
   size_t id = 0;
   apply([&](Args const&... args) { ((o << args << (++id == N ? "" : " ")), ...); }, t);
@@ -129,21 +133,21 @@ ostream& operator<<(ostream& o, tuple<Args...> const& t) {
 
 // 初期値xのsz*args配列を作成.makev2<T>(x,sz...) Tの非型パラメータが取れないとき.
 template<class T, class X>
-T makev2(X const& x) { return x; }
+constexpr T makev2(X const& x) { return x; }
 template<class T, class X>
-auto makev2(X const& x, int sz, auto... args) { return vector(sz, makev2<T>(x, args...)); }
+constexpr auto makev2(X const& x, int sz, auto... args) { return vector(sz, makev2<T>(x, args...)); }
 // 初期値T{}のsz*args配列を作成.makev<T>(sz,...)
 template<class T>
-auto makev(auto... args) { return makev2<T>(T{}, args...); }
+constexpr auto makev(auto... args) { return makev2<T>(T{}, args...); }
 // 初期値xのsz*args配列を作成.makev<T,x>(sz,...)
 template<class T, T x>
-auto makev(auto... args) { return makev2<T>(x, args...); }
+constexpr auto makev(auto... args) { return makev2<T>(x, args...); }
 
 #define vin(type, name, ...) \
   auto name = makev<type>(__VA_ARGS__); \
   cin >> name
 template<ostream& os = cerr, ranges::input_range R>
-void outv(R&& r, string const& s = "\n") {
+inline void outv(R&& r, string const& s = "\n") {
 #ifndef __LOCAL
   if constexpr(&os == &cerr) return;
 #endif
@@ -156,41 +160,41 @@ void outv(R&& r, string const& s = "\n") {
 }
 
 // clang-format off
-void myin(auto&&... args) { (cin >> ... >> args); }
+inline void myin(auto&&... args) { (cin >> ... >> args); }
 
 #define iin(...) int __VA_ARGS__; myin(__VA_ARGS__)
 #define lin(...) ll __VA_ARGS__; myin(__VA_ARGS__)
 #define var(type_name, ...) type_name __VA_ARGS__; myin(__VA_ARGS__)
 
-void myout(auto&&... args) { ((cout << args << '\n'), ...); }
-void myouts(auto&& x, auto&&... args) { cout << x; ((cout << ' ' << args), ...); cout << '\n'; }
-void myoutc(auto&&... args) { (cout << ... << args); cout << '\n'; }
-void dbgout(auto&&... args) { ((cerr << args << ' '), ...); cerr << '\n'; }
+inline void myout(auto&&... args) { ((cout << args << '\n'), ...); }
+inline void myouts(auto&& x, auto&&... args) { cout << x; ((cout << ' ' << args), ...); cout << '\n'; }
+inline void myoutc(auto&&... args) { (cout << ... << args); cout << '\n'; }
+inline void dbgout(auto&&... args) { ((cerr << args << ' '), ...); cerr << '\n'; }
 
-bool chmax(auto& a, auto const& b) { if(a < b) { a = b; return true; } return false; }
-bool chmin(auto& a, auto const& b) { if(a > b) { a = b; return true; } return false; }
+constexpr bool chmax(auto& a, auto const& b) { if(a < b) { a = b; return true; } return false; }
+constexpr bool chmin(auto& a, auto const& b) { if(a > b) { a = b; return true; } return false; }
 
-template<class T>
-bool cmax(T& a, T& b) { if(a < b) { swap(a, b); return true; } return false; }
-template<class T>
-bool cmin(T& a, T& b) { if(a > b) { swap(a, b); return true; } return false; }
+template<class T> constexpr bool cmax(T& a, T& b) { if(a < b) { swap(a, b); return true; } return false; }
+template<class T> constexpr bool cmin(T& a, T& b) { if(a > b) { swap(a, b); return true; } return false; }
 // clang-format on
 
 template<class T, class... Args>
-common_type_t<T, Args...> gcd(T&& x, Args&&... args) {
+constexpr common_type_t<T, Args...> gcd(T&& x, Args&&... args) {
   common_type_t<T, Args...> r = forward<T>(x);
   ([&] { r = std::gcd(r, forward<Args>(args)); }(), ...);
   return r;
 }
 template<class T, class... Args>
-common_type_t<T, Args...> lcm(T&& x, Args&&... args) {
+constexpr common_type_t<T, Args...> lcm(T&& x, Args&&... args) {
   common_type_t<T, Args...> r = forward<T>(x);
   ([&] { r = std::lcm(r, forward<Args>(args)); }(), ...);
   return r;
 }
 
 // 一つでも[l,r)に含まれない物があるか.
-bool outside(auto const& l, auto const& r, auto const&... args) { return ((args < l || r <= args) || ...); }
+constexpr bool outside(auto const& l, auto const& r, auto const&... args) {
+  return ((args < l || r <= args) || ...);
+}
 
 // clang-format off
 template<class T> struct range_inside { using type = T; static constexpr int count = 0; };
@@ -218,11 +222,11 @@ template<auto e, ranges::range R>
 constexpr inside_type_t<R> value(R const& r, auto... args) { return value2(e, r, args...); }
 
 template<class T1, class T2>
-pair<T1, T2> operator+(pair<T1, T2> const& p1, pair<T1, T2> const& p2) {
+constexpr pair<T1, T2> operator+(pair<T1, T2> const& p1, pair<T1, T2> const& p2) {
   return pair<T1, T2>(p1.first + p2.first, p1.second + p2.second);
 }
 template<class T1, class T2>
-pair<T1, T2>& operator+=(pair<T1, T2>& p1, pair<T1, T2> const& p2) {
+constexpr pair<T1, T2>& operator+=(pair<T1, T2>& p1, pair<T1, T2> const& p2) {
   p1.first += p2.first;
   p1.second += p2.second;
   return p1;
@@ -237,14 +241,14 @@ template<class... Args> using PQ = priority_queue<Args...>;
 template<class T> using PQg = priority_queue<T, vector<T>, greater<T>>;
 // clang-format on
 
-void invoke_solve(auto& f) {
+constexpr void invoke_solve(auto& f) {
   using R = invoke_result_t<decltype(f)>;
   if constexpr(is_void_v<R>) f();
   else if constexpr(same_as<bool, R>) reyes(f());
   else myout(f());
 }
 
-void io_setting() {
+constexpr void io_setting() {
   cin.exceptions(ios::badbit | ios::failbit);
   cin.tie(nullptr), ios::sync_with_stdio(false);
 #ifdef __LOCAL
@@ -261,7 +265,7 @@ using P = pair<int, int>;
 using T = tuple<int, int, int>;
 using A = array<int, 2>;
 
-void solve() {
+constexpr void solve() {
 }
 
 int main() {
