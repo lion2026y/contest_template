@@ -119,14 +119,11 @@ inline ostream& operator<<(ostream& o, pair<T, U> const& p) { return o << p.firs
 
 template<class... Args>
 inline istream& operator>>(istream& i, tuple<Args...>& t) {
-  apply([&](Args&... args) { (i >> ... >> args); }, t);
-  return i;
+  return apply([&](Args&... args) -> istream& { return (i >> ... >> args); }, t);
 }
 template<class... Args>
 inline ostream& operator<<(ostream& o, tuple<Args...> const& t) {
-  constexpr size_t N = sizeof...(Args);
-  size_t id = 0;
-  apply([&](Args const&... args) { ((o << args << (++id == N ? "" : " ")), ...); }, t);
+  apply([&](Args const&... args) { int i = 0; ((o << (i++ ? " " : "") << args), ...); }, t);
   return o;
 }
 // clang-format on
