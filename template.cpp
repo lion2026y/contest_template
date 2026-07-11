@@ -40,7 +40,7 @@ constexpr ll infl = 1LL << 60;
 
 constexpr char el = '\n', spa = ' ', hs = '#', dot = '.', sma = 'a', bga = 'A', zr = '0';
 
-constexpr int sign(auto const& x) { return x % 2 ? -1 : 1; }
+constexpr int psign(auto const& x) { return x % 2 ? -1 : 1; }
 // {左,上,右,下,左上,右上,右下,左下}
 constexpr int dr[] = {0, -1, 0, 1, -1, -1, 1, 1}, dc[] = {-1, 0, 1, 0, -1, 1, 1, -1};
 constexpr string dir_str = "LURD";
