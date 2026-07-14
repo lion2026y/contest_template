@@ -55,11 +55,11 @@ constexpr string dir_str = "LURD";
   #define dbg2(x, ...) [&] { \
     dbgout(__LINE__, '(' + string(#x) __VA_OPT__(+ ", " + string(#__VA_ARGS__)) + ')', \
     x __VA_OPT__(, __VA_ARGS__)); return (x); }() __VA_OPT__(, __VA_ARGS__)
-  #define wl cerr << "----------\n"
+  #define _wl cerr << "----------\n"
 #else
   #define dbg(...) (void)0
   #define dbg2(...) __VA_ARGS__
-  #define wl (void)0
+  #define _wl (void)0
 #endif
 
 #define all(v) v.begin(), v.end()
