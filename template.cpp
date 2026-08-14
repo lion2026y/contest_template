@@ -1,4 +1,4 @@
-#ifdef __LOCAL
+#ifdef LOCAL_BUILD
   #include "my.h"
 #else
   #ifdef __clang__
@@ -50,16 +50,16 @@ constexpr string dir_str = "LURD";
 #define rep3(i, s, n, p) for(ll i = ll(s); i < ll(n); i += ll(p))
 #define rrep(i, n) for(int i = (n) - 1; i >= 0; --i)
 
-#ifdef __LOCAL
+#ifdef LOCAL_BUILD
   #define dbg(...) dbgout(__LINE__, '(' + string(#__VA_ARGS__) + ')', __VA_ARGS__)
   #define dbg2(x, ...) [&] { \
     dbgout(__LINE__, '(' + string(#x) __VA_OPT__(+ ", " + string(#__VA_ARGS__)) + ')', \
     x __VA_OPT__(, __VA_ARGS__)); return (x); }() __VA_OPT__(, __VA_ARGS__)
-  #define _wl cerr << "----------\n"
+  #define wl_ cerr << "----------\n"
 #else
   #define dbg(...) (void)0
   #define dbg2(...) __VA_ARGS__
-  #define _wl (void)0
+  #define wl_ (void)0
 #endif
 
 #define all(v) v.begin(), v.end()
@@ -98,14 +98,14 @@ template<class... Args> inline istream& operator>>(istream& i, tuple<Args...>& t
 template<class... Args> inline ostream& operator<<(ostream& o, tuple<Args...> const& t) ;
 
 template<ranges::range R>
-struct __ignore_default_range_io: false_type {};
+struct ignore_default_range_io_: false_type {};
 
 template<ranges::range R>
   requires(ranges::output_range<R, ranges::range_value_t<R>> && !constructible_from<string_view, R>&&
-           !__ignore_default_range_io<remove_cvref_t<R>>::value)
+           !ignore_default_range_io_<remove_cvref_t<R>>::value)
 inline istream& operator>>(istream& is, R&& r) { for(auto& e: r) is >> e; return is; }
 template<ranges::input_range R>
-  requires(!constructible_from<string_view, R> && !__ignore_default_range_io<remove_cvref_t<R>>::value)
+  requires(!constructible_from<string_view, R> && !ignore_default_range_io_<remove_cvref_t<R>>::value)
 inline ostream& operator<<(ostream& os, R&& r) {
   auto it = ranges::begin(r); auto end = ranges::end(r);
   if(it == end) return os;
@@ -145,7 +145,7 @@ constexpr auto makev(auto... args) { return makev2<T>(x, args...); }
   cin >> name
 template<ostream& os = cerr, ranges::input_range R>
 inline void outv(R&& r, string const& s = "\n") {
-#ifndef __LOCAL
+#ifndef LOCAL_BUILD
   if constexpr(&os == &cerr) return;
 #endif
   auto it = ranges::begin(r);
@@ -248,7 +248,7 @@ constexpr void invoke_solve(auto& f) {
 constexpr void io_setting() {
   cin.exceptions(ios::badbit | ios::failbit);
   cin.tie(nullptr), ios::sync_with_stdio(false);
-#ifdef __LOCAL
+#ifdef LOCAL_BUILD
   cout << unitbuf;
 #endif
   cout << fixed << setprecision(20), cerr << fixed << setprecision(20);
