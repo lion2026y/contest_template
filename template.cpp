@@ -52,13 +52,11 @@ constexpr string dir_str = "LURD";
 
 #ifdef LOCAL_BUILD
   #define dbg(...) dbgout(__LINE__, '(' + string(#__VA_ARGS__) + ')', __VA_ARGS__)
-  #define dbg2(x, ...) [&] { \
-    dbgout(__LINE__, '(' + string(#x) __VA_OPT__(+ ", " + string(#__VA_ARGS__)) + ')', \
-    x __VA_OPT__(, __VA_ARGS__)); return (x); }() __VA_OPT__(, __VA_ARGS__)
+  #define dbg2(...) (dbg(__VA_ARGS__), __VA_ARGS__)
   #define wl_ (cerr << "----------\n")
 #else
   #define dbg(...) (void)0
-  #define dbg2(x, ...) (x) __VA_OPT__(, __VA_ARGS__)
+  #define dbg2(...) (__VA_ARGS__)
   #define wl_ (void)0
 #endif
 
