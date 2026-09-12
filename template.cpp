@@ -55,17 +55,17 @@ constexpr string dir_str = "LURD";
   #define dbg2(x, ...) [&] { \
     dbgout(__LINE__, '(' + string(#x) __VA_OPT__(+ ", " + string(#__VA_ARGS__)) + ')', \
     x __VA_OPT__(, __VA_ARGS__)); return (x); }() __VA_OPT__(, __VA_ARGS__)
-  #define wl_ cerr << "----------\n"
+  #define wl_ (cerr << "----------\n")
 #else
   #define dbg(...) (void)0
-  #define dbg2(...) __VA_ARGS__
+  #define dbg2(x, ...) (x) __VA_OPT__(, __VA_ARGS__)
   #define wl_ (void)0
 #endif
 
-#define all(v) v.begin(), v.end()
-#define rall(v) v.rbegin(), v.rend()
+#define all(v) (v).begin(), (v).end()
+#define rall(v) (v).rbegin(), (v).rend()
 
-#define r_iota(i, n, f) views::iota(0, int(n)) | tf(i, f)
+#define r_iota(i, n, f) (views::iota(0, int(n)) | tf(i, f))
 #define tf(x, f) views::transform([&]([[maybe_unused]] auto const& x) { return f; }) | ranges::to<vector>()
 
 // clang-format off
@@ -76,7 +76,7 @@ inline bool No() { cout << "No\n"; return false; }
 inline bool yes() { cout << "yes\n"; return true; }
 inline bool no() { cout << "no\n"; return false; }
 // clang-format on
-#define reyes(b) (b ? Yes() : No())
+#define reyes(b) ((b) ? Yes() : No())
 
 #define fn0(f) [&] { return f; }
 #define fn1(f) [&]([[maybe_unused]] auto const& a1) { return f; }
