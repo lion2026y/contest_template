@@ -64,7 +64,8 @@ constexpr string dir_str = "LURD";
 #define rall(v) (v).rbegin(), (v).rend()
 
 #define r_iota(i, n, f) (views::iota(0, int(n)) | tf(i, f))
-#define tf(x, f) views::transform([&]([[maybe_unused]] auto const& x) { return f; }) | ranges::to<vector>()
+#define tf(x, f) views::transform([&]([[maybe_unused]] auto const& x) { return f; })
+constexpr auto tv = ranges::to<vector>();
 
 // clang-format off
 inline bool YES() { cout << "YES\n"; return true; }
