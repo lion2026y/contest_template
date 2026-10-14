@@ -20,6 +20,9 @@
   #include <immintrin.h>
 #endif
 
+// template: https://github.com/lion2026y/contest_template
+// library: https://github.com/lion2026y/lion-cpp-library
+
 using namespace std;
 namespace rg = std::ranges;
 namespace vw = std::ranges::views;
