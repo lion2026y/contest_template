@@ -99,15 +99,13 @@ template<class T, class U> inline ostream& operator<<(ostream& o, pair<T, U> con
 template<class... Args> inline istream& operator>>(istream& i, tuple<Args...>& t) ;
 template<class... Args> inline ostream& operator<<(ostream& o, tuple<Args...> const& t) ;
 
-template<ranges::range R>
-struct ignore_default_range_io_: false_type {};
+template<class R> concept define_range_io_ = !convertible_to<R, string_view>;
 
 template<ranges::range R>
-  requires(ranges::output_range<R, ranges::range_value_t<R>> && !constructible_from<string_view, R>&&
-           !ignore_default_range_io_<remove_cvref_t<R>>::value)
+  requires(ranges::output_range<R, ranges::range_value_t<R>> && define_range_io_<remove_cvref_t<R>>)
 inline istream& operator>>(istream& is, R&& r) { for(auto& e: r) is >> e; return is; }
 template<ranges::input_range R>
-  requires(!constructible_from<string_view, R> && !ignore_default_range_io_<remove_cvref_t<R>>::value)
+  requires define_range_io_<remove_cvref_t<R>>
 inline ostream& operator<<(ostream& os, R&& r) {
   auto it = ranges::begin(r); auto end = ranges::end(r);
   if(it == end) return os;
