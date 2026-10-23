@@ -70,6 +70,9 @@ constexpr string dir_str = "LURD";
 #define tf(x, f) views::transform([&]([[maybe_unused]] auto const& x) { return f; })
 constexpr auto tv = ranges::to<vector>();
 
+template<ranges::input_range R, class T = ranges::range_value_t<R>>
+constexpr auto r_sum(R&& r, T init = {}) { return ranges::fold_left(forward<R>(r), move(init), plus{}); }
+
 // clang-format off
 inline bool YES() { cout << "YES\n"; return true; }
 inline bool NO() { cout << "NO\n"; return false; }
