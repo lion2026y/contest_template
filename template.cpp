@@ -66,8 +66,8 @@ constexpr string dir_str = "LURD";
 #define all(v) (v).begin(), (v).end()
 #define rall(v) (v).rbegin(), (v).rend()
 
-#define r_iota(i, n, f) (views::iota(0, int(n)) | tf(i, f))
-#define tf(x, f) views::transform([&]([[maybe_unused]] auto const& x) { return f; })
+#define r_iota(i, n, ...) (views::iota(0, int(n)) | tf(i, __VA_ARGS__))
+#define tf(x, ...) views::transform([&]([[maybe_unused]] auto const& x) { return __VA_ARGS__; })
 constexpr auto tv = ranges::to<vector>();
 
 template<ranges::input_range R, class T = ranges::range_value_t<R>>
@@ -83,9 +83,10 @@ inline bool no() { cout << "no\n"; return false; }
 // clang-format on
 #define reyes(b) ((b) ? Yes() : No())
 
-#define fn0(f) [&] { return f; }
-#define fn1(f) [&]([[maybe_unused]] auto const& a1) { return f; }
-#define fn2(f) [&]([[maybe_unused]] auto const& a1, [[maybe_unused]] auto const& a2) { return f; }
+#define fn0(...) [&] { return __VA_ARGS__; }
+#define fn1(...) [&]([[maybe_unused]] auto const& a1) { return __VA_ARGS__; }
+#define fn2(...) [&]([[maybe_unused]] auto const& a1, [[maybe_unused]] auto const& a2) { return __VA_ARGS__; }
+#define f2l(...) fn2(__VA_ARGS__(a1, a2))
 
 // clang-format off
 template<int M>
