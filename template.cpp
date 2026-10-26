@@ -89,14 +89,15 @@ inline bool no() { cout << "no\n"; return false; }
 #define f2l(...) fn2(__VA_ARGS__(a1, a2))
 
 // clang-format off
-template<int M>
-inline istream& operator>>(istream& i, static_modint<M>& n) { long long t; i >> t; n = t; return i; }
-template<int M>
-inline ostream& operator<<(ostream& o, static_modint<M> const& n) { return o << n.val(); }
-template<int id>
-inline istream& operator>>(istream& i, dynamic_modint<id>& n) { long long t; i >> t; n = t; return i; }
-template<int id>
-inline ostream& operator<<(ostream& o, dynamic_modint<id> const& n) { return o << n.val(); }
+// static_modint<M> の形で受けると <=> で IntelliSense が落ちるので, is_modint で制約して受ける.
+namespace atcoder {
+template<class T> requires internal::is_modint<T>::value
+inline istream& operator>>(istream& i, T& n) { long long t; i >> t; n = t; return i; }
+template<class T> requires internal::is_modint<T>::value
+inline ostream& operator<<(ostream& o, T const& n) { return o << n.val(); }
+template<class T> requires internal::is_modint<T>::value
+constexpr auto operator<=>(T const& a, T const& b) { return a.val() <=> b.val(); }
+} // namespace atcoder
 
 template<class T, class U> inline istream& operator>>(istream& i, pair<T, U>& p);
 template<class T, class U> inline ostream& operator<<(ostream& o, pair<T, U> const& p);
