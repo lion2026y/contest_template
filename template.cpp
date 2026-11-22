@@ -262,10 +262,10 @@ constexpr void io_setting() {
 using mint = modint998244353;
 // using mint = modint1000000007;
 
-using V = vector<int>;
-using P = pair<int, int>;
-using T = tuple<int, int, int>;
-using A = array<int, 2>;
+using V = vector<ll>;
+using P = pair<ll, ll>;
+using T = tuple<ll, ll, ll>;
+using A = array<ll, 2>;
 
 constexpr void solve() {
 }
