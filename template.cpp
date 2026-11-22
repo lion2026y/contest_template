@@ -73,15 +73,13 @@ constexpr auto tv = ranges::to<vector>();
 template<ranges::input_range R, class T = ranges::range_value_t<R>>
 constexpr auto r_sum(R&& r, T init = {}) { return ranges::fold_left(forward<R>(r), move(init), plus{}); }
 
-// clang-format off
-inline bool YES() { cout << "YES\n"; return true; }
-inline bool NO() { cout << "NO\n"; return false; }
-inline bool Yes() { cout << "Yes\n"; return true; }
-inline bool No() { cout << "No\n"; return false; }
-inline bool yes() { cout << "yes\n"; return true; }
-inline bool no() { cout << "no\n"; return false; }
-// clang-format on
-#define reyes(b) ((b) ? Yes() : No())
+inline void YES() { cout << "YES\n"; }
+inline void NO() { cout << "NO\n"; }
+inline void Yes() { cout << "Yes\n"; }
+inline void No() { cout << "No\n"; }
+inline void yes() { cout << "yes\n"; }
+inline void no() { cout << "no\n"; }
+inline bool reyes(auto const& b) { return b ? Yes() : No(), bool(b); }
 
 #define fn0(...) [&] { return __VA_ARGS__; }
 #define fn1(...) [&]([[maybe_unused]] auto const& a1) { return __VA_ARGS__; }
