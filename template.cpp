@@ -145,9 +145,10 @@ constexpr auto makev(auto... args) { return makev2<T>(T{}, args...); }
 template<class T, T x>
 constexpr auto makev(auto... args) { return makev2<T>(x, args...); }
 
-#define vin(type, name, ...) \
-  auto name = makev<type>(__VA_ARGS__); \
-  cin >> name
+// clang-format off
+template<class T>
+inline auto vin(auto... args) { auto v = makev<T>(args...); cin >> v; return v; }
+// clang-format on
 template<ostream& os = cerr, ranges::input_range R>
 inline void outv(R&& r, string const& s = "\n") {
 #ifndef LOCAL_BUILD
